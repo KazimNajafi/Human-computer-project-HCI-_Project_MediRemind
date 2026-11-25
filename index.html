@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediRemind — Medicine Reminder App for Elderly Users</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 72 72'%3E%3Crect width='72' height='72' rx='20' fill='%230F5C5C'/%3E%3Crect x='20' y='24' width='32' height='24' rx='12' fill='%23FFFFFF'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Naskh+Arabic:wght@500;700&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="prototype-shell">
+    <!-- Main Mobile App Container -->
+    <div class="app-frame" id="app-frame">
+
+      <!-- =====================================================
+           SCREEN 1: WELCOME / LOGIN
+      ====================================================== -->
+      <section class="screen screen-active" id="screen-welcome" aria-labelledby="welcome-title">
+        <div class="welcome-layout">
+          <div class="brand-header">
+            <div class="brand-logo" aria-hidden="true">
+              <svg viewBox="0 0 72 72" width="72" height="72" fill="none">
+                <rect width="72" height="72" rx="20" fill="#0F5C5C"/>
+                <rect x="20" y="24" width="32" height="24" rx="12" fill="#FFFFFF"/>
+                <path d="M36 24H40C46.6274 24 52 29.3726 52 36C52 42.6274 46.6274 48 40 48H36V24Z" fill="#D5ECEC"/>
+                <circle cx="52" cy="20" r="10" fill="#1B6E3A" stroke="#FAF8F5" stroke-width="3"/>
+                <path d="M52 15.5V20.5L55 22" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h1 class="app-title" id="welcome-title" data-i18n="appName">MediRemind</h1>
+            <p class="welcome-subtitle" data-i18n="welcomeSubtitle">
+              Simple daily medicine reminders made for you.
+            </p>
+          </div>
+
+          <!-- Language Selector -->
+          <div class="welcome-card">
+            <p class="section-label" data-i18n="chooseLanguage">Choose Language / زبان منتخب کریں</p>
+            <div class="lang-choice-grid" role="group" aria-label="Language selection">
+              <button type="button" class="lang-card-btn active" id="welcome-lang-en" data-lang-select="en" aria-pressed="true">
+                <span class="lang-card-check" aria-hidden="true">✓</span>
+                <span class="lang-card-main">English</span>
+                <span class="lang-card-sub">Simple English</span>
+              </button>
+              <button type="button" class="lang-card-btn" id="welcome-lang-ur" data-lang-select="ur" aria-pressed="false">
+                <span class="lang-card-check" aria-hidden="true">✓</span>
+                <span class="lang-card-main urdu-sample">اردو</span>
+                <span class="lang-card-sub urdu-sample">آسان اردو</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Primary Start Action -->
+          <div class="welcome-actions">
+            <button type="button" class="btn btn-primary btn-xl btn-full" id="btn-start-app">
+              <span class="btn-icon" aria-hidden="true">▶</span>
+              <span data-i18n="startBtn">Start</span>
+            </button>
+
+            <button type="button" class="btn btn-secondary btn-full" id="btn-welcome-help">
+              <span class="btn-icon" aria-hidden="true">🔊</span>
+              <span data-i18n="helpGuideBtn">Help &amp; Voice Guide</span>
+            </button>
+          </div>
+
+          <p class="demo-footnote" data-i18n="demoBadge">
+            HCI Interactive Prototype • Uses Sample Demo Data
+          </p>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           SCREEN 2: HOME (TODAY'S SCHEDULE)
+      ====================================================== -->
+      <section class="screen" id="screen-home" aria-labelledby="home-title">
+        <header class="top-bar">
+          <button type="button" class="top-action-btn" id="btn-home-back" aria-label="Back to Welcome">
+            <span class="dir-arrow" aria-hidden="true">←</span>
+            <span data-i18n="backBtn">Back</span>
+          </button>
+
+          <div class="top-bar-right">
+            <button type="button" class="top-action-btn" id="btn-toggle-lang-home" aria-label="Switch Language">
+              <span aria-hidden="true">🌐</span>
+              <span data-i18n="switchLangLabel">اردو</span>
+            </button>
+            <button type="button" class="top-action-btn" id="btn-help-home" aria-label="Open Help">
+              <span aria-hidden="true">?</span>
+              <span data-i18n="helpBtn">Help</span>
+            </button>
+          </div>
+        </header>
+
+        <main class="screen-body">
+          <div class="home-date-block">
+            <p class="greeting-text" id="home-greeting" data-i18n="greeting">Assalam-o-Alaikum</p>
+            <h2 class="screen-heading" id="home-title" data-i18n="todayMedicinesTitle">Today's Medicines</h2>
+            <p class="date-text" id="home-date-display"></p>
+          </div>
+
+          <!-- Progress Status Summary (Visibility of System Status) -->
+          <div class="status-summary-card" id="home-summary-card" aria-live="polite">
+            <div class="status-summary-text">
+              <strong id="home-progress-text">1 of 4 taken today</strong>
+              <span class="demo-chip" data-i18n="demoDataTag">Demo Data</span>
+            </div>
+            <div class="progress-track" aria-hidden="true">
+              <div class="progress-fill" id="home-progress-bar" style="width: 25%"></div>
+            </div>
+          </div>
+
+          <!-- Primary CTA: Add Medicine -->
+          <div class="home-primary-actions">
+            <button type="button" class="btn btn-primary btn-lg btn-full" id="btn-go-add">
+              <span class="btn-icon" aria-hidden="true">＋</span>
+              <span data-i18n="addMedicineBtn">Add Medicine</span>
+            </button>
+          </div>
+
+          <!-- Active Reminder Trigger Banner (for easy testing & demo of Screen 4) -->
+          <div class="alert-preview-banner" id="due-alert-banner">
+            <div class="alert-preview-info">
+              <span class="alert-bell" aria-hidden="true">🔔</span>
+              <div>
+                <p class="alert-preview-title" id="banner-due-title" data-i18n="nextReminderReady">Next Reminder Ready</p>
+                <p class="alert-preview-sub" id="banner-due-med"></p>
+              </div>
+            </div>
+            <button type="button" class="btn btn-alert-open" id="btn-open-reminder">
+              <span aria-hidden="true">⏰</span>
+              <span data-i18n="openReminderBtn">Open Alert</span>
+            </button>
+          </div>
+
+          <!-- Medicine List Container -->
+          <div class="medicine-list" id="home-medicine-list" aria-live="polite">
+            <!-- Populated dynamically by js/app.js -->
+          </div>
+        </main>
+
+        <!-- Consistent Bottom Navigation -->
+        <nav class="bottom-nav" aria-label="Main Navigation">
+          <button type="button" class="nav-btn active" data-nav="home" aria-current="page">
+            <span class="nav-icon" aria-hidden="true">🏠</span>
+            <span class="nav-label" data-i18n="navHome">Home</span>
+          </button>
+          <button type="button" class="nav-btn" data-nav="add">
+            <span class="nav-icon" aria-hidden="true">➕</span>
+            <span class="nav-label" data-i18n="navAdd">Add</span>
+          </button>
+          <button type="button" class="nav-btn" data-nav="reminder">
+            <span class="nav-icon" aria-hidden="true">🔔</span>
+            <span class="nav-label" data-i18n="navAlert">Alert</span>
+          </button>
+          <button type="button" class="nav-btn" data-nav="history">
+            <span class="nav-icon" aria-hidden="true">📋</span>
+            <span class="nav-label" data-i18n="navHistory">History</span>
+          </button>
+        </nav>
+      </section>
+
+      <!-- =====================================================
+           SCREEN 3: ADD MEDICINE
+      ====================================================== -->
+      <section class="screen" id="screen-add" aria-labelledby="add-title">
+        <header class="top-bar">
+          <button type="button" class="top-action-btn" id="btn-add-back">
+            <span class="dir-arrow" aria-hidden="true">←</span>
+            <span data-i18n="backBtn">Back</span>
+          </button>
+          <div class="top-bar-right">
+            <button type="button" class="top-action-btn" id="btn-help-add">
+              <span aria-hidden="true">?</span>
+              <span data-i18n="helpBtn">Help</span>
+            </button>
+          </div>
+        </header>
+
+        <main class="screen-body">
+          <h2 class="screen-heading" id="add-title" data-i18n="addMedicineTitle">Add Medicine</h2>
+          <p class="screen-helper-text" data-i18n="addMedicineSubtitle">
+            Fill in 3 simple details and press Save.
+          </p>
+
+          <form id="add-medicine-form" novalidate>
+            <!-- Error Summary Alert (Heuristic 9: Help Users Fix Errors) -->
+            <div class="form-error-box hidden" id="form-error-box" role="alert" aria-live="assertive">
+              <span aria-hidden="true">⚠</span>
+              <span id="form-error-text"></span>
+            </div>
+
+            <!-- 1. Medicine Name -->
+            <div class="form-group">
+              <label class="form-label" for="input-med-name">
+                <span class="step-badge">1</span>
+                <span data-i18n="labelMedName">Medicine Name</span>
+              </label>
+              <input
+                type="text"
+                id="input-med-name"
+                class="form-input"
+                autocomplete="off"
+                placeholder="e.g. Panadol"
+                data-i18n-placeholder="placeholderMedName"
+                required
+              >
+              <p class="field-error hidden" id="err-med-name"></p>
+            </div>
+
+            <!-- 2. Medicine Time (Real-world familiar labels + time picker) -->
+            <div class="form-group">
+              <label class="form-label" for="input-med-time">
+                <span class="step-badge">2</span>
+                <span data-i18n="labelMedTime">Medicine Time</span>
+              </label>
+              <p class="field-hint" data-i18n="quickTimeHint">Tap a time of day, or set exact time below:</p>
+              <div class="chip-grid" role="group" aria-label="Quick time presets">
+                <button type="button" class="choice-chip" data-time-preset="08:00" data-period="morning">
+                  <span aria-hidden="true">🌅</span>
+                  <span data-i18n="presetMorning">Subah (8:00 AM)</span>
+                </button>
+                <button type="button" class="choice-chip" data-time-preset="13:00" data-period="afternoon">
+                  <span aria-hidden="true">☀️</span>
+                  <span data-i18n="presetAfternoon">Dopahar (1:00 PM)</span>
+                </button>
+                <button type="button" class="choice-chip" data-time-preset="18:00" data-period="evening">
+                  <span aria-hidden="true">🌇</span>
+                  <span data-i18n="presetEvening">Shaam (6:00 PM)</span>
+                </button>
+                <button type="button" class="choice-chip" data-time-preset="20:00" data-period="night">
+                  <span aria-hidden="true">🌙</span>
+                  <span data-i18n="presetNight">Raat (8:00 PM)</span>
+                </button>
+              </div>
+              <input
+                type="time"
+                id="input-med-time"
+                class="form-input time-input"
+                value="20:00"
+                required
+              >
+              <p class="field-error hidden" id="err-med-time"></p>
+            </div>
+
+            <!-- 3. Dose -->
+            <div class="form-group">
+              <label class="form-label" for="input-med-dose">
+                <span class="step-badge">3</span>
+                <span data-i18n="labelMedDose">Dose (How much)</span>
+              </label>
+              <div class="chip-grid" role="group" aria-label="Quick dose options">
+                <button type="button" class="choice-chip active" data-dose-preset="1 Tablet" data-i18n="dose1Tab">1 Tablet</button>
+                <button type="button" class="choice-chip" data-dose-preset="2 Tablets" data-i18n="dose2Tab">2 Tablets</button>
+                <button type="button" class="choice-chip" data-dose-preset="Half Tablet" data-i18n="doseHalfTab">Half Tablet</button>
+                <button type="button" class="choice-chip" data-dose-preset="1 Spoon" data-i18n="dose1Spoon">1 Spoon</button>
+              </div>
+              <input
+                type="text"
+                id="input-med-dose"
+                class="form-input"
+                value="1 Tablet"
+                placeholder="e.g. 1 Tablet"
+                data-i18n-placeholder="placeholderMedDose"
+                required
+              >
+              <p class="field-error hidden" id="err-med-dose"></p>
+            </div>
+
+            <!-- 4. Medicine Visual Type (Recognition rather than recall) -->
+            <div class="form-group">
+              <p class="form-label">
+                <span class="step-badge">4</span>
+                <span data-i18n="labelMedVisual">Medicine Look (Optional)</span>
+              </p>
+              <div class="visual-choice-grid" role="group" aria-label="Medicine visual icon">
+                <button type="button" class="visual-chip active" data-visual="tablet-white">
+                  <span class="med-thumb" data-render-icon="tablet-white"></span>
+                  <span data-i18n="visualWhitePill">White Pill</span>
+                </button>
+                <button type="button" class="visual-chip" data-visual="capsule-teal">
+                  <span class="med-thumb" data-render-icon="capsule-teal"></span>
+                  <span data-i18n="visualCapsule">Capsule</span>
+                </button>
+                <button type="button" class="visual-chip" data-visual="tablet-round">
+                  <span class="med-thumb" data-render-icon="tablet-round"></span>
+                  <span data-i18n="visualRoundPill">Round Pill</span>
+                </button>
+                <button type="button" class="visual-chip" data-visual="syrup-bottle">
+                  <span class="med-thumb" data-render-icon="syrup-bottle"></span>
+                  <span data-i18n="visualSyrup">Syrup</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Primary Save Action -->
+            <div class="form-submit-area">
+              <button type="submit" class="btn btn-primary btn-xl btn-full" id="btn-save-medicine">
+                <span class="btn-icon" aria-hidden="true">✓</span>
+                <span data-i18n="saveMedicineBtn">Save Medicine</span>
+              </button>
+            </div>
+          </form>
+        </main>
+
+        <nav class="bottom-nav" aria-label="Main Navigation">
+          <button type="button" class="nav-btn" data-nav="home">
+            <span class="nav-icon" aria-hidden="true">🏠</span>
+            <span class="nav-label" data-i18n="navHome">Home</span>
+          </button>
+          <button type="button" class="nav-btn active" data-nav="add" aria-current="page">
+            <span class="nav-icon" aria-hidden="true">➕</span>
+            <span class="nav-label" data-i18n="navAdd">Add</span>
+          </button>
+          <button type="button" class="nav-btn" data-nav="reminder">
+            <span class="nav-icon" aria-hidden="true">🔔</span>
+            <span class="nav-label" data-i18n="navAlert">Alert</span>
+          </button>
+          <button type="button" class="nav-btn" data-nav="history">
+            <span class="nav-icon" aria-hidden="true">📋</span>
+            <span class="nav-label" data-i18n="navHistory">History</span>
+          </button>
+        </nav>
+      </section>
+
+      <!-- =====================================================
+           SCREEN 4: REMINDER ALERT
+      ====================================================== -->
+      <section class="screen" id="screen-reminder" aria-labelledby="reminder-med-name">
+        <header class="top-bar">
+          <button type="button" class="top-action-btn" id="btn-reminder-back">
+            <span class="dir-arrow" aria-hidden="true">←</span>
+            <span data-i18n="backBtn">Back</span>
+          </button>
+          <div class="top-bar-right">
+            <button type="button" class="top-action-btn" id="btn-speak-reminder">
+              <span aria-hidden="true">🔊</span>
+              <span data-i18n="listenBtn">Listen</span>
+            </button>
+          </div>
+        </header>
+
+        <main class="screen-body reminder-body">
+          <!-- State A: Active Reminder -->
+          <div class="reminder-active-view" id="reminder-active-view">
+            <div class="reminder-badge-row">
+              <span class="reminder-live-pill" id="reminder-badge-text" data-i18n="reminderHeading">
+                ⏰ Time for Your Medicine
+              </span>
+            </div>
+
+            <!-- Snooze / Re-reminder Notice (shown after Remind Me Later or simulated 10-min repeat) -->
+            <div class="snooze-banner hidden" id="snooze-banner" role="status" aria-live="polite">
+              <p id="snooze-banner-text"></p>
+            </div>
+
+            <div class="reminder-card">
+              <div class="reminder-visual-box" id="reminder-visual-box" aria-hidden="true">
+                <!-- Large recognizable SVG visual injected here -->
+              </div>
+
+              <h2 class="reminder-med-title" id="reminder-med-name">Norvasc</h2>
+              <p class="reminder-med-purpose" id="reminder-med-note">Blood Pressure</p>
+
+              <div class="reminder-meta-grid">
+                <div class="reminder-meta-item">
+                  <span class="meta-label" data-i18n="metaTime">Time</span>
+                  <strong class="meta-value" id="reminder-med-time">1:00 PM • Dopahar</strong>
+                </div>
+                <div class="reminder-meta-item">
+                  <span class="meta-label" data-i18n="metaDose">Dose</span>
+                  <strong class="meta-value" id="reminder-med-dose">1 Tablet</strong>
+                </div>
+              </div>
+            </div>
+
+            <!-- VERY LARGE Taken Button + Smaller Remind Me Later Button -->
+            <div class="reminder-actions">
+              <button type="button" class="btn btn-taken-huge btn-full" id="btn-reminder-taken">
+                <span class="btn-icon" aria-hidden="true">✓</span>
+                <span data-i18n="takenBtnBig">Taken</span>
+              </button>
+
+              <button type="button" class="btn btn-secondary btn-full" id="btn-reminder-later">
+                <span class="btn-icon" aria-hidden="true">⏱</span>
+                <span data-i18n="remindLaterBtn">Remind Me Later (10 min)</span>
+              </button>
+            </div>
+
+            <!-- Honest Prototype Demo Simulation Controls (No fake background timer claims) -->
+            <div class="prototype-sim-box">
+              <p class="sim-note" data-i18n="simDisclaimer">
+                Prototype Demo: Browser alerts only run while this app is open.
+              </p>
+              <div class="sim-btn-row">
+                <button type="button" class="btn btn-sim" id="btn-sim-10min">
+                  <span aria-hidden="true">⏩</span>
+                  <span data-i18n="sim10MinBtn">Simulate 10 Min Re-Alert</span>
+                </button>
+                <button type="button" class="btn btn-sim btn-sim-danger" id="btn-sim-missed">
+                  <span aria-hidden="true">📩</span>
+                  <span data-i18n="simMissedBtn">Simulate Missed (Helper Alert)</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- State B: Well Done Confirmation (Step 5 of User Flow) -->
+          <div class="reminder-done-view hidden" id="reminder-done-view" role="status" aria-live="polite">
+            <div class="done-circle" aria-hidden="true">✓</div>
+            <h2 class="done-title" data-i18n="wellDoneTitle">Well Done!</h2>
+            <p class="done-message" id="done-detail-text">
+              Your medicine has been marked as Taken and saved in History.
+            </p>
+            <div class="done-actions">
+              <button type="button" class="btn btn-primary btn-lg btn-full" id="btn-done-home">
+                <span aria-hidden="true">🏠</span>
+                <span data-i18n="goHomeBtn">Back to Home</span>
+              </button>
+              <button type="button" class="btn btn-secondary btn-full" id="btn-done-history">
+                <span aria-hidden="true">📋</span>
+                <span data-i18n="viewHistoryBtn">View History</span>
+              </button>
+              <button type="button" class="btn btn-text-undo btn-full" id="btn-done-undo">
+                <span aria-hidden="true">↩</span>
+                <span data-i18n="undoTakenBtn">Pressed by mistake? Undo</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- State C: Simulated Missed / Helper Alert Preview -->
+          <div class="helper-alert-view hidden" id="helper-alert-view" role="status" aria-live="polite">
+            <div class="helper-alert-badge" aria-hidden="true">!</div>
+            <h2 class="helper-alert-title" data-i18n="helperAlertTitle">Missed Dose — Helper Alert (Demo)</h2>
+            <p class="helper-alert-body" id="helper-alert-detail"></p>
+            <div class="helper-phone-preview">
+              <p class="helper-phone-label" data-i18n="helperPreviewHeader">Family Helper Notification Preview</p>
+              <p class="helper-phone-msg" id="helper-sms-preview"></p>
+            </div>
+            <p class="sim-note" data-i18n="helperNoRealSms">
+              Note: This is a simulated preview for the HCI prototype. No real SMS or push notification is sent.
+            </p>
+            <div class="done-actions">
+              <button type="button" class="btn btn-primary btn-lg btn-full" id="btn-helper-home">
+                <span aria-hidden="true">🏠</span>
+                <span data-i18n="goHomeBtn">Back to Home</span>
+              </button>
+              <button type="button" class="btn btn-secondary btn-full" id="btn-helper-history">
+                <span aria-hidden="true">📋</span>
+                <span data-i18n="viewHistoryBtn">View History</span>
+              </button>
+            </div>
+          </div>
+        </main>
+      </section>
+
+      <!-- =====================================================
+           SCREEN 5: HISTORY
+      ====================================================== -->
+      <section class="screen" id="screen-history" aria-labelledby="history-title">
+        <header class="top-bar">
+          <button type="button" class="top-action-btn" id="btn-history-back">
+            <span class="dir-arrow" aria-hidden="true">←</span>
+            <span data-i18n="backBtn">Back</span>
+          </button>
+          <div class="top-bar-right">
+            <button type="button" class="top-action-btn" id="btn-toggle-lang-history">
+              <span aria-hidden="true">🌐</span>
+              <span data-i18n="switchLangLabel">اردو</span>
+            </button>
+            <button type="button" class="top-action-btn" id="btn-help-history">
+              <span aria-hidden="true">?</span>
+              <span data-i18n="helpBtn">Help</span>
+            </button>
+          </div>
+        </header>
+
+        <main class="screen-body">
+          <h2 class="screen-heading" id="history-title" data-i18n="historyTitle">Medicine History</h2>
+          <p class="screen-helper-text" data-i18n="historySubtitle">
+            Check medicines you took or missed by date.
+          </p>
+
+          <!-- Filter Tabs -->
+          <div class="filter-bar" role="group" aria-label="Filter history">
+            <button type="button" class="filter-btn active" data-history-filter="all" data-i18n="filterAll">All</button>
+            <button type="button" class="filter-btn" data-history-filter="taken" data-i18n="filterTaken">✓ Taken</button>
+            <button type="button" class="filter-btn" data-history-filter="missed" data-i18n="filterMissed">✕ Missed</button>
+          </div>
+
+          <!-- Summary Stats -->
+          <div class="history-stats-row" id="history-stats-row">
+            <!-- Populated dynamically -->
+          </div>
+
+          <!-- Date-wise History Groups -->
+          <div class="history-list" id="history-list" aria-live="polite">
+            <!-- Populated dynamically -->
+          </div>
+        </main>
+
+        <nav class="bottom-nav" aria-label="Main Navigation">
+          <button type="button" class="nav-btn" data-nav="home">
+            <span class="nav-icon" aria-hidden="true">🏠</span>
+            <span class="nav-label" data-i18n="navHome">Home</span>
+          </button>
+          <button type="button" class="nav-btn" data-nav="add">
+            <span class="nav-icon" aria-hidden="true">➕</span>
+            <span class="nav-label" data-i18n="navAdd">Add</span>
+          </button>
+          <button type="button" class="nav-btn" data-nav="reminder">
+            <span class="nav-icon" aria-hidden="true">🔔</span>
+            <span class="nav-label" data-i18n="navAlert">Alert</span>
+          </button>
+          <button type="button" class="nav-btn active" data-nav="history" aria-current="page">
+            <span class="nav-icon" aria-hidden="true">📋</span>
+            <span class="nav-label" data-i18n="navHistory">History</span>
+          </button>
+        </nav>
+      </section>
+
+      <!-- =====================================================
+           TOAST FEEDBACK BAR (WITH UNDO SUPPORT)
+      ====================================================== -->
+      <div class="toast-bar hidden" id="toast-bar" role="status" aria-live="polite">
+        <span class="toast-message" id="toast-message"></span>
+        <button type="button" class="toast-undo-btn hidden" id="toast-undo-btn" data-i18n="undoBtn">Undo</button>
+      </div>
+
+      <!-- =====================================================
+           CONFIRM DELETE MODAL (HEURISTIC 5: ERROR PREVENTION)
+      ====================================================== -->
+      <div class="modal-overlay hidden" id="modal-confirm" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+        <div class="modal-card">
+          <h3 class="modal-title" id="confirm-title" data-i18n="confirmDeleteTitle">Are you sure?</h3>
+          <p class="modal-body" id="confirm-message"></p>
+          <div class="modal-actions">
+            <button type="button" class="btn btn-danger btn-full" id="btn-confirm-yes" data-i18n="confirmYesDelete">Yes, Delete</button>
+            <button type="button" class="btn btn-secondary btn-full" id="btn-confirm-no" data-i18n="cancelBtn">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- =====================================================
+           HELP & SETTINGS MODAL (HEURISTIC 10 + TEXT SIZE)
+      ====================================================== -->
+      <div class="modal-overlay hidden" id="modal-help" role="dialog" aria-modal="true" aria-labelledby="help-modal-title">
+        <div class="modal-card modal-card-scroll">
+          <div class="modal-header-row">
+            <h3 class="modal-title" id="help-modal-title" data-i18n="helpModalTitle">Help &amp; Easy Settings</h3>
+            <button type="button" class="btn-close-modal" id="btn-close-help" aria-label="Close Help">
+              <span aria-hidden="true">✕</span>
+              <span data-i18n="closeBtn">Close</span>
+            </button>
+          </div>
+
+          <!-- Voice Guide -->
+          <div class="help-section">
+            <h4 class="help-section-title" data-i18n="voiceGuideTitle">Voice Guide</h4>
+            <p class="help-text" data-i18n="voiceGuideDesc">
+              Press the button below to hear how to use MediRemind step by step.
+            </p>
+            <button type="button" class="btn btn-primary btn-full" id="btn-play-voice-guide">
+              <span aria-hidden="true">🔊</span>
+              <span data-i18n="playVoiceGuideBtn">Play Voice Guide</span>
+            </button>
+          </div>
+
+          <!-- Quick Steps -->
+          <div class="help-section">
+            <h4 class="help-section-title" data-i18n="howToUseTitle">How to Use</h4>
+            <ol class="help-steps-list">
+              <li data-i18n="helpStep1">Home shows all medicines for today.</li>
+              <li data-i18n="helpStep2">Tap the green "Taken" button after taking a medicine.</li>
+              <li data-i18n="helpStep3">Tap "Add Medicine" to save a new medicine.</li>
+              <li data-i18n="helpStep4">Tap "History" to see taken and missed medicines.</li>
+            </ol>
+          </div>
+
+          <!-- Accessibility Text Size -->
+          <div class="help-section">
+            <h4 class="help-section-title" data-i18n="textSizeTitle">Text Size</h4>
+            <div class="chip-grid">
+              <button type="button" class="choice-chip active" id="btn-size-normal" data-text-size="normal" data-i18n="textSizeNormal">Large (Default)</button>
+              <button type="button" class="choice-chip" id="btn-size-xl" data-text-size="xl" data-i18n="textSizeXL">Extra Large</button>
+            </div>
+          </div>
+
+          <!-- Language -->
+          <div class="help-section">
+            <h4 class="help-section-title" data-i18n="languageTitle">Language / زبان</h4>
+            <div class="chip-grid">
+              <button type="button" class="choice-chip" id="btn-help-lang-en" data-lang-select="en">English</button>
+              <button type="button" class="choice-chip urdu-sample" id="btn-help-lang-ur" data-lang-select="ur">اردو</button>
+            </div>
+          </div>
+
+          <!-- Prototype Info & Reset -->
+          <div class="help-section help-section-muted">
+            <h4 class="help-section-title" data-i18n="demoResetTitle">Prototype Demo Data</h4>
+            <p class="help-text" data-i18n="demoResetDesc">
+              This app is an HCI prototype. Data is stored only in this browser. You can reset the sample medicines before testing with a new user.
+            </p>
+            <button type="button" class="btn btn-secondary btn-full" id="btn-reset-demo">
+              <span aria-hidden="true">↺</span>
+              <span data-i18n="resetDemoBtn">Reset Sample Demo Data</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Scripts loaded in simple dependency order so double-clicking index.html works offline -->
+  <script src="js/translations.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
